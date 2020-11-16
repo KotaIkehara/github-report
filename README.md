@@ -1,4 +1,20 @@
 ﻿# GitHub Report
+Google App Scriptで書かれた，Slack上で動くGitHubでの行動通知Bot．
+
+指定した時間帯になると，Slackに1日の行動を通知してくれます．
+
+![実際の画面](https://pbs.twimg.com/media/Em4CHdRUUAUzF0_?format=jpg&name=small)
+
+# 利用方法
+
+```main.gs```をGoogle Driveに保存して実行します．
+
+下記の手順に従ってください．
+
+## Google App Scriptへ設置
+- https://drive.google.com/ を開き，左上にある「新規」ボタンをクリック
+- 
+
 
 ## 課題
 日々開発をしていく中で様々な実装を行い，学ぶことがたくさんある．
@@ -10,9 +26,6 @@
 ### メリット
 - 「毎日決まった時間」にすることで，1日の振り返りが習慣化するというメリットがある．
 - Slack届いたメッセージにコメントをすることで，見た目もすっきりした状態でこれまでの振り返りを蓄積していける
-
-## 実際の画面
-![実際の画面](https://pbs.twimg.com/media/Em4CHdRUUAUzF0_?format=jpg&name=small)
 
 ## 開発言語
 - GAS
