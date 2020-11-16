@@ -13,8 +13,9 @@ Google App Scriptで書かれた，Slack上で動くGitHubでの行動通知Bot�
 
 ## Google App Scriptへ設置
 - https://drive.google.com/ を開き，左上にある「新規」ボタンをクリック
-- 
+- 出てきたメニューから「その他 > Google App Script」を選択
 
+![demo1](https://raw.githubusercontent.com/kotaikehara/github-report/master/docs/images/new.png)
 
 ## 課題
 日々開発をしていく中で様々な実装を行い，学ぶことがたくさんある．
