@@ -40,7 +40,14 @@ Google App Scriptで書かれた，Slack上で動くGitHubでの行動通知Bot�
 1. USER_NAME
 1. SLACK_WEBHOOK_URL
 
+1. GITHUB_TOKEN
+[個人アクセストークンを発行する - GitHub Docs](https://docs.github.com/ja/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)に従いトークンを発行します．ステップ7.で付与するスコープは一番上の```repo```にチェックを入れればOK
 
+1. USER_NAME
+GitHubアカウントのユーザ名．```https://github.com/<USER_NAME>```に該当する．
+
+1. SLACK_WEBHOOK_URL
+[SalckでのIncoming Webhookの利用｜Slack](https://slack.com/intl/ja-jp/help/articles/115005265063-Slack-%E3%81%A7%E3%81%AE-Incoming-Webhook-%E3%81%AE%E5%88%A9%E7%94%A8)に従って発行する．BOTの作成もこのページの手順に従ってください．
 
 ## 課題
 日々開発をしていく中で様々な実装を行い，学ぶことがたくさんある．
