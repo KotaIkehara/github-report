@@ -18,7 +18,7 @@ Google App Scriptで書かれた，Slack上で動くGitHubでの行動通知Bot�
 
 <img src="https://github.com/KotaIkehara/github-report/blob/main/images/new.png" width="500px">
 
-- 空のプロジェクトが作成されるので，```main,gs```をコピーしてブラウザのエディタ内に貼り付けて保存する．
+- 空のプロジェクトが作成されるので，```main.gs```をコピーしてブラウザのエディタ内に貼り付けて保存する．
 
 ### プロパティの設定
 このアプリは，3つのプロパティを設定する必要があります．下記の手順に従って設定を行ってください．
