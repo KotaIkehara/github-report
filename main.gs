@@ -1,29 +1,29 @@
 function createMessage() {
-  const repositoryNames = fetchRepositoryNames();
-  const reposName = fetchRepositoryNames();
+  const reposNames = getRepositoryNames();
   
-  var json
-  const repos = []
-  for (i = 0, len = reposName.length; i < len; ++i) {
-    json  = fetchCommitTotal(reposName[i]);
+  var json;
+  const repos = [];
+  for (i = 0, len = reposNames.length; i < len; ++i) {
+    json  = fetchCommitTotal(reposNames[i]);
     repos.push(json.data.repository);
   }
   
-  var branch;
+  var branches;
   var total;
   var info;
   const projectName = [];
   const project = [];
   for (i = 0, len = repos.length; i < len; ++i) {
-    branch = repos[i].refs.edges;
+    branches = repos[i].refs.edges;
     total = repos[i].refs.nodes;
-    info = prepareInfo(branch, total);
-    // commit = 0の時は表示しない
+    info = prepareInfo(branches, total);
+    
+    // commit数 = 0の時は表示しない
     if(info === null) continue;
-    projectName.push(reposName[i]);
+    
+    projectName.push(reposNames[i]);
     project.push(info);
   }
-  // JSONを整形し、プロジェクト毎のブランチとコミット数を取得
 
   //  日付情報の取得
   const today        = formatDate(0);
@@ -38,29 +38,29 @@ function createMessage() {
   message += '(集計日：' + oneDayBefore + ' ' + triggerTime + ' ~ ' + today + ' ' + triggerTime + ')\n\n';
 
   for (i = 0, len = project.length; i < len; ++i) {
+    // "*": 太字, "```": インラインコード
     message += '*' + projectName[i];
     message += '*\n ```' + project[i] + '```\n\n';
   }
-  message += '明日も頑張りましょう！:whale:'
+  message += '明日も頑張りましょう！:whale:';
 
   // Slackに送る
   sendToSlack(message);
 }
 
-function prepareInfo(branch, total) {
+function prepareInfo(branches, total) {
   const branchName  = [];
   const commitTotal = [];
   const data        = [];
 
-  for (var i = 0, len = branch.length; i < len; ++i) {
+  for (var i = 0, len = branches.length; i < len; ++i) {
     // コミット数が0のブランチを除外
     if(parseInt(total[i].target.history.totalCount) === 0) {
       continue;
     }
-
-    // 配列にオブジェクトを格納
+    // dataにブランチ名と，そのブランチのコミット数を格納
     data.push({
-      "branchName"  : branch[i].node.name,
+      "branchName"  : branches[i].node.name,
       "commitTotal" : total[i].target.history.totalCount
     });
   }
@@ -86,12 +86,8 @@ function fetchCommitTotal(name) {
   const user = PropertiesService.getScriptProperties().getProperty("USER_NAME");
   const oneDayBefore = formatDate(-1);
 
-//  Issueを作った
-//  Issueにコメントした
-//  PullRequestを作った
-//  Pullrequestにレビューコメントをした
-
-//  GraphQL内での変数の使い方注意
+//  GraphQL内での変数の使い方でつまずいた
+// 改行文字をエスケープしないと，正しくパース出来ない
   const graphql = ' \
 { \
 repository(owner: "' + user + '", name: "' + name + '") {\
@@ -119,9 +115,11 @@ fragment RepoFragment on Repository {\
  }\
 }\
 ';
-
+  
+  
+//クエリ，ミューテーションに関わらず，JSONエンコードされたボディを提供するので、HTTPの動詞はPOST
   const options = {
-    'method' : 'get',
+    'method' : 'post',
     'contentType' : 'application/json',
     'headers' : {
       'Authorization' : 'Bearer ' +  token
@@ -134,11 +132,14 @@ fragment RepoFragment on Repository {\
   return json;
 }
 
-function fetchRepositoryNames() {
+function getRepositoryNames() {
   const url   = 'https://api.github.com/graphql';
   const token = PropertiesService.getScriptProperties().getProperty("GITHUB_TOKEN");
   const user = PropertiesService.getScriptProperties().getProperty("USER_NAME");
-  const graphql = 'query {\
+  
+  //最近更新されたリポジトリの内，10件のレポジトリ名をクエリする
+  const graphql = '\
+  {\
   user(login: "' + user + '") {\
     repositories(first: 10, affiliations: OWNER, orderBy: {field: UPDATED_AT, direction: DESC}) {\
       edges {\
@@ -152,7 +153,7 @@ function fetchRepositoryNames() {
 ';
 
   const options = {
-    'method' : 'get',
+    'method' : 'post',
     'contentType' : 'application/json',
     'headers' : {
       'Authorization' : 'Bearer ' +  token
@@ -164,11 +165,11 @@ function fetchRepositoryNames() {
   const json     = JSON.parse(response.getContentText());
 
   const repositories = json.data.user.repositories.edges;
-  var repositoryList = [];
+  const repositoryNames = [];
   for (var i=0; i<10; i++){
-    repositoryList.push(repositories[i].node.name);
+    repositoryNames.push(repositories[i].node.name);
   }
-  return repositoryList;
+  return repositoryNames;
 }
 
 /** 
@@ -190,12 +191,11 @@ function formatDate(days) {
 function sendToSlack(body) {
   const url = PropertiesService.getScriptProperties().getProperty("SLACK_WEBHOOK_URL");
 
-  // Slackに通知する際の名前、色、画像を決定する
+  // Slackに通知する際の名前，アイコン，色を決定する
   const data = {
     'username' : 'GitHub Report',
     'icon_emoji' : ':dolphin:',
     'attachments': [{
-      'color': '#fc166a',
       'text' : body,
     }],
   };
@@ -207,5 +207,6 @@ function sendToSlack(body) {
     'payload' : payload
   };
 
+  // Slack Webhook urlへPOSTリクエストを送る
   UrlFetchApp.fetch(url, options);
 }
