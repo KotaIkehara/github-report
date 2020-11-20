@@ -3,7 +3,7 @@ Google App Scriptで書かれた，Slack上で動くGitHubでの行動通知Bot�
 
 指定した時間帯になると，Slackに1日の行動を通知してくれます．
 
-![実際の画面](https://pbs.twimg.com/media/Em4CHdRUUAUzF0_?format=jpg&name=small)
+<img src="https://pbs.twimg.com/media/Em4CHdRUUAUzF0_?format=jpg&name=small" width="320px">
 
 # 利用方法
 
@@ -16,7 +16,7 @@ Google App Scriptで書かれた，Slack上で動くGitHubでの行動通知Bot�
 - https://drive.google.com/ を開き，左上にある「新規」ボタンをクリック
 - 出てきたメニューから「その他 > Google App Script」を選択
 
-![demo1](https://github.com/KotaIkehara/github-report/blob/main/images/new.png)
+<img src="https://github.com/KotaIkehara/github-report/blob/main/images/new.png" width="500px">
 
 - 空のプロジェクトが作成されるので，```main,gs```をコピーしてブラウザのエディタ内に貼り付けて保存する．
 
@@ -25,11 +25,11 @@ Google App Scriptで書かれた，Slack上で動くGitHubでの行動通知Bot�
 
 - まず，編集のプロジェクト画面のメニューにある「ファイル > プロジェクトのプロパティ」をクリック
 
-![image](https://user-images.githubusercontent.com/50253187/99481151-da5b8500-299c-11eb-8754-81a6f31e4e97.png)
+<img src="https://user-images.githubusercontent.com/50253187/99481151-da5b8500-299c-11eb-8754-81a6f31e4e97.png" width="320px">
 
 - 「プロジェクトのプロパティ」画面のメニュー内にある「スクリプトのプロパティ」をクリック
 
-![image](https://user-images.githubusercontent.com/50253187/99481418-6d94ba80-299d-11eb-8dbb-326ba0d36d5e.png)
+<image src="https://user-images.githubusercontent.com/50253187/99481418-6d94ba80-299d-11eb-8dbb-326ba0d36d5e.png" width="500px">
 
 - 「+ 行を追加」をクリックすればプロパティの追加ができます
 
